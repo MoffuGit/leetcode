@@ -16,28 +16,21 @@ function exist(board: string[][], word: string): boolean {
             return true
         }
 
-        if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT || board[y][x] === "*") {
+        if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT || board[y][x] !== word[idx] || board[y][x] === "*") {
             return false
         }
 
         let boardChar = board[y][x]
-        let wordChar = word[idx]
+        board[y][x] = "*"
+        let res =
+            search(x - 1, y, idx + 1) ||
+            search(x + 1, y, idx + 1) ||
+            search(x, y - 1, idx + 1) ||
+            search(x, y + 1, idx + 1)
 
-        if (boardChar === wordChar) {
-            board[y][x] = "*"
+        board[y][x] = boardChar
 
-            if (
-                search(x - 1, y, idx + 1) ||
-                search(x + 1, y, idx + 1) ||
-                search(x, y - 1, idx + 1) ||
-                search(x, y + 1, idx + 1)
-            ) {
-                return true
-            }
-            board[y][x] = boardChar
-        }
-
-        return false
+        return res
     }
 
     return false
